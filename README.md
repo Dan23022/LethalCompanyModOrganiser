@@ -12,5 +12,5 @@ Mod organiser for Lethal company
 Currently this only works for taking and adding plugins to the game that you have installed onto the system but this will be updated in the future.  so if you install a mod that updates the content folder for instance, then you can technically still disable it or enable it by using this mod organiser as typically the .dll located in the plugins folder will handle enabling it but this is being worked on at the moment.
 
 **Known issues**<br />
-Profiles do not work
+Profiles do not work<br />
 Download Mods through the app does not yet work (Code I have for this works, just not Implemented into this version)
