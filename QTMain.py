@@ -15,9 +15,63 @@ from PyQt5.QtWidgets import (
     QLabel,
     QComboBox,
     QGridLayout,
-    QApplication, QFileDialog,
+    QApplication, QFileDialog, QMenu, QAction, QVBoxLayout, QProgressBar,
 )
 
+
+class Ui_Form(object):
+    def setupUi(self, Form):
+        if Form.objectName():
+            Form.setObjectName(u"Form")
+        Form.resize(633, 516)
+        try:
+            self.verticalLayoutWidget = QWidget(Form)
+            self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
+            self.verticalLayoutWidget.setGeometry(QRect(10, 90, 611, 411))
+            self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
+            self.verticalLayout.setObjectName(u"verticalLayout")
+            self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+            self.modsList = QListView(self.verticalLayoutWidget)
+            self.modsList.setObjectName(u"modsList")
+
+            self.verticalLayout.addWidget(self.modsList)
+
+            self.progressBar = QProgressBar(self.verticalLayoutWidget)
+            self.progressBar.setObjectName(u"progressBar")
+            self.progressBar.setValue(0)
+
+            self.verticalLayout.addWidget(self.progressBar)
+
+            self.downloadButton = QPushButton(self.verticalLayoutWidget)
+            self.downloadButton.setObjectName(u"downloadButton")
+
+            self.verticalLayout.addWidget(self.downloadButton)
+
+            self.verticalLayoutWidget_2 = QWidget(Form)
+            self.verticalLayoutWidget_2.setObjectName(u"verticalLayoutWidget_2")
+            self.verticalLayoutWidget_2.setGeometry(QRect(10, 20, 611, 51))
+            self.verticalLayout_2 = QVBoxLayout(self.verticalLayoutWidget_2)
+            self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+            self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+            self.headingLabel = QLabel(self.verticalLayoutWidget_2)
+            self.headingLabel.setObjectName(u"headingLabel")
+            font = QFont()
+            font.setPointSize(24)
+            self.headingLabel.setFont(font)
+
+            self.verticalLayout_2.addWidget(self.headingLabel)#
+
+            self.retranslateUi(Form)
+
+            QMetaObject.connectSlotsByName(Form)
+
+        except Exception as e:
+            print(f"Error in setupUi: {e}")
+
+    def retranslateUi(self, Form):
+        Form.setWindowTitle(QCoreApplication.translate("Download more mods", u"Download more mods", None))
+        self.downloadButton.setText(QCoreApplication.translate("Form", u"Download", None))
+        self.headingLabel.setText(QCoreApplication.translate("Form", u"Download more mods", None))
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -29,6 +83,8 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
+        self.actionDownload_Mods = QAction(MainWindow)
+        self.actionDownload_Mods.setObjectName(u"actionDownload_Mods")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -94,32 +150,41 @@ class Ui_MainWindow(object):
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 698, 21))
+        self.menuMore = QMenu(self.menubar)
+        self.menuMore.setObjectName(u"menuMore")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
+
+        self.menubar.addAction(self.menuMore.menuAction())
+        self.menuMore.addAction(self.actionDownload_Mods)
 
         self.retranslateUi(MainWindow)
 
         QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"LCMO", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"LCMDT", None))
+        self.actionDownload_Mods.setText(QCoreApplication.translate("MainWindow", u"Download Mods", None))
+        self.saveProfileButton.setText(QCoreApplication.translate("MainWindow", u"Save", None))
+        self.unloadAllBuon.setText(QCoreApplication.translate("MainWindow", u"Unload All", None))
+        self.headingLabel.setText(QCoreApplication.translate("MainWindow", u"Lethal Comapny Mod Deployment Tool", None))
+        self.loadedModsLabel.setText(QCoreApplication.translate("MainWindow", u"Loaded Mods", None))
+        self.loadAllBuon.setText(QCoreApplication.translate("MainWindow", u"Load All", None))
+        self.unloadedModsLabel.setText(QCoreApplication.translate("MainWindow", u"Unloaded Mods", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Profile:", None))
         self.loadButton.setText(QCoreApplication.translate("MainWindow", u"Load", None))
         self.unloadBuon.setText(QCoreApplication.translate("MainWindow", u"Unload", None))
-        self.unloadedModsLabel.setText(QCoreApplication.translate("MainWindow", u"Unloaded Mods", None))
-        self.loadAllBuon.setText(QCoreApplication.translate("MainWindow", u"Load All", None))
-        self.headingLabel.setText(QCoreApplication.translate("MainWindow", u"Lethal Company Mod Organiser", None))
-        self.unloadAllBuon.setText(QCoreApplication.translate("MainWindow", u"Unload All", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Profile:", None))
-        self.loadedModsLabel.setText(QCoreApplication.translate("MainWindow", u"Loaded Mods", None))
-        self.saveProfileButton.setText(QCoreApplication.translate("MainWindow", u"Save", None))
+        self.menuMore.setTitle(QCoreApplication.translate("MainWindow", u"More", None))
 
 
 class MyMainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MyMainWindow, self).__init__(parent)
         self.setupUi(self)
+
+        self.mods_window = Ui_Form()  # Keep a reference here
 
         self.loadButton.clicked.connect(self.loadMod)
         self.unloadBuon.clicked.connect(self.unloadMod)
@@ -131,6 +196,18 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         self.unloadedModsList.setModel(self.unloaded_mods_model)
         self.loadedModsList.setModel(self.loaded_mods_model)
+
+        self.actionDownload_Mods.triggered.connect(self.open_new_window)
+
+    def open_new_window(self):
+        try:
+            self.mods_window = QWidget()
+            ui_form = Ui_Form()
+            ui_form.setupUi(self.mods_window)
+            self.mods_window.show()
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
 
     def populateLoaded(self):
         folders = []
