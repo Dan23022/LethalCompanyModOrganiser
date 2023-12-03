@@ -184,7 +184,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         super(MyMainWindow, self).__init__(parent)
         self.setupUi(self)
 
-        self.mods_window = Ui_Form()  # Keep a reference here
+        self.mods_window = Ui_Form()
 
         self.loadButton.clicked.connect(self.loadMod)
         self.unloadBuon.clicked.connect(self.unloadMod)
